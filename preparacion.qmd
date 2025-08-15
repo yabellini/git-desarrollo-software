@@ -12,7 +12,8 @@ En esa misma pagina [hay una guia de instalacion para cada sistema operativo en 
 
 ## Creá una cuenta en GitHub {.unnumbered}
 
-GitHub es una de las interfaces y repositorios mundiales mas conocidos y utilizados por quienes desarrollan software. Vamos a utilizarlo para publicar nuestro código.
+GitHub es una de las interfaces y repositorios mundiales mas conocidos y utilizados por quienes desarrollan software.
+Vamos a utilizarlo para publicar nuestro código.
 
 -   Entrá a <https://github.com/>.
 
@@ -24,7 +25,8 @@ GitHub es una de las interfaces y repositorios mundiales mas conocidos y utiliza
 
 ## Configuración de Git y GitHub {.unnumbered}
 
-Ahora que ya tenés git instalado y una cuenta en GitHub, es importante completar la configuración necesaria para que puedas trabajar. Hay varias maneras de hacerlo, en este caso lo haremos desde R usando el paquete *usethis*.
+Ahora que ya tenés git instalado y una cuenta en GitHub, es importante completar la configuración necesaria para que puedas trabajar.
+Hay varias maneras de hacerlo, en este caso lo haremos desde R usando el paquete *usethis*.
 
 1.  Abrí RStudio e instalá usethis corriendo el siguiente código en la **consola**:
 
@@ -39,7 +41,9 @@ usethis::use_git_config(user.name = "Juan Perez",
                user.email = "juan@ejemplo.org")
 ```
 
-Sustituyéndolo por tu nombre y el correo electrónico asociado a tu cuenta de GitHub. git usará esta información para registrar quien hizo cambios en un archivo. Veremos esto en más detalle durante la materia.
+Sustituyéndolo por tu nombre y el correo electrónico asociado a tu cuenta de GitHub.
+git usará esta información para registrar quien hizo cambios en un archivo.
+Veremos esto en más detalle durante la materia.
 
 3.  Configurá tu PAT
 
@@ -51,7 +55,8 @@ Primero tendrás que crear el token:
 usethis::create_github_token()
 ```
 
-Se abrirá la ventana de GitHub y ahí tendrás que seguir los pasos para crear el token y copiarlo (muy importante!). Por las dudas **no cierres esta ventana**.
+Se abrirá la ventana de GitHub y ahí tendrás que seguir los pasos para crear el token y copiarlo (muy importante!).
+Por las dudas **no cierres esta ventana**.
 
 Ahora corré el siguiente código para setear el token en tu computadora:
 
@@ -59,7 +64,8 @@ Ahora corré el siguiente código para setear el token en tu computadora:
 gitcreds::gitcreds_set()
 ```
 
-Elegí crear/guardar el token. Si tenés Ubuntu esto no termina acá, tendrás que seguir los pasos en [esta guia](https://blog.djnavarro.net/posts/2021-08-08_git-credential-helpers/) para guardar el token de manera permanente.
+Elegí crear/guardar el token.
+Si tenés Ubuntu esto no termina acá, tendrás que seguir los pasos en [esta guia](https://blog.djnavarro.net/posts/2021-08-08_git-credential-helpers/) para guardar el token de manera permanente.
 
 4.  *Vacuná* tu instalación de git:
 
@@ -67,7 +73,8 @@ Elegí crear/guardar el token. Si tenés Ubuntu esto no termina acá, tendrás q
 usethis::git_vaccinate() 
 ```
 
-Esta función agrega algunos archivos y configuraciones que se consideran buenas prácticas. Podés leer la documentación de la función para más detalles.
+Esta función agrega algunos archivos y configuraciones que se consideran buenas prácticas.
+Podés leer la documentación de la función para más detalles.
 
 5.  Chequeá que todo esté en orden:
 
@@ -75,4 +82,5 @@ Esta función agrega algunos archivos y configuraciones que se consideran buenas
 usethis::git_sitrep() 
 ```
 
-Esta función devuelve el estado de situación de tu configuración de git y GitHub. Revisá que aparezca tu nombre y mail, que aparezca `Vaccinated: TRUE` y que `Personal access token for "https://github.com": <discovered>` esté tal cual.
+Esta función devuelve el estado de situación de tu configuración de git y GitHub.
+Revisá que aparezca tu nombre y mail, que aparezca `Vaccinated: TRUE` y que `Personal access token for "https://github.com": <discovered>` esté tal cual.

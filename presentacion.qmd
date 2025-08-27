@@ -7,7 +7,7 @@ format:
     fontsize: "18.5pt"
 ---
 
-# Hola! Les damos la bienvenida
+# Git para trabajar individualmente
 
 ------------------------------------------------------------------------
 
@@ -60,7 +60,6 @@ Tienen algo asi en su computadora?
 
 ![Modelo conceptual de un flujo de trabajo utilizando proyectos de RStudio y git. Los archivos se añaden al área de preparación y a continuación se envían al repositorio local. Puede enviar los cambios al repositorio remoto y descargar los nuevos cambios a su ordenador.](images/local_remote.png)
 
-
 ## `add --> commmit --> push`
 
 ![](images/add-commit-push.png)
@@ -111,15 +110,15 @@ Supongamos que estas arrancando un nuevo proyecto:
 3.  Hace un cambio en el archivo, puede ser cualquier cosa. Guardalo.
 4.  Repetí el paso 2.
 5.  Ahora, hacé *push* para enviar los commits al repositorio remoto utilizando el botón con la flecha verde apuntando hacia arriba.
-6. En el repositorio remoto chequea que los cambios estén presentes en el archivo.
+6.  En el repositorio remoto chequea que los cambios estén presentes en el archivo.
 
 ## ✏️ Haciendo cambios remotos
 
 1.  En GitHub navegá hasta encontrar el archivo que creaste recién. Entrá y hace click en el lapiz ("Edit this file") para editarlo.
 2.  Agregá un par de lineas de código o texto.
-3. Arriba a la derecha encontrarás un botón verde que dice "Commit changes...".
-4. Edita el mensaje del commit para que sea informativo y luego hace clic en "Commit changes"
-5. Revisá si los cambios se guardaron correctamente.
+3.  Arriba a la derecha encontrarás un botón verde que dice "Commit changes...".
+4.  Edita el mensaje del commit para que sea informativo y luego hace clic en "Commit changes"
+5.  Revisá si los cambios se guardaron correctamente.
 
 ## ✏️ Sincronizando el repo remoto con el repo local
 
@@ -127,3 +126,103 @@ Supongamos que estas arrancando un nuevo proyecto:
 2.  Revisá panel de Git.
 3.  Hacé click en la flecha azul que dice "Pull".
 4.  Revisá el archivo que modificaste en GitHub.
+
+# Git para trabajar en equipo
+
+## Objetivos de hoy
+
+-   Aplicar conceptos de flujos de trabajo colaborativo usando Git y GitHub.
+-   Comprender como los conflictos de versiones se generan y como resolverlos.
+-   Identificar las diferencias entre branchs y forks e identificar situaciones en las que utilizar cada una.
+-   Comprender el uso y el rol de las branchs y los pull requests en la colaboración en un proyecto.
+-   Gestiona pull requests como responsable o líder de un proyecto.
+
+## Conflictos de merge
+
+
+
+::::: {.columns}
+
+
+::: {.column width="60%" .fragment}
+![](images/merge-conflict.png)
+:::
+
+::: {.column width="40%" .fragment}
+![](images/merge-conflicts-meme.png)
+:::
+:::::
+
+## Estrategias al trabajar en equipo
+
+::::: {.columns}
+
+
+:::: {.column width="50%" .fragment}
+
+::: {.incremental}
+
+1. `pull` antes de arrancar a trabjar
+2. Cada persona trabaja en archivos distintos
+3. Las personas se turnan para modificar el mismo archivo
+4. Las personas trabajan con branchs: **Una versión paralela de los archivos en el repo**
+
+:::
+
+::::
+
+:::: {.column width="50%" .fragment}
+![](images/branch.png)
+::::
+
+:::::
+
+## Escenario 1: Usamos branchs
+
+:::: {.columns}
+::: {.column width="60%"}
+
+![](images/no_fork.png)
+
+::: 
+
+::: {.column width="40%"}
+
+1.  Cloná el repositorio en tu computadora
+2.  Crear una nueva _branch_.
+3.  Edita archivos, agregalos y hacé commits en esa _branch._
+4.  Envía un _pull request_ al
+    repositorio remoto para comparar tus cambios en tu _branch_ con main.
+5.  El _pull request_ es aceptado y se hace _merge_ o hay que hacer nuevos
+    cambios (vuelve al paso 3).
+
+:::
+::::
+
+
+## Escenario 2: Usamos forks y branchs
+
+:::: {.columns}
+::: {.column width="60%"}
+
+![](images/si_fork.png)
+
+::: 
+
+::: {.column width="40%"}
+
+1.  Crear un fork del repositorio principal  
+2.  Cloná el repositorio en tu computadora
+3.  Crear una nueva _branch_.
+4.  Edita archivos, agregalos y hacé commits en esa _branch._
+5.  Envía un _pull request_ al
+    repositorio remoto para comparar tus cambios en tu _branch_ con main.
+6.  El _pull request_ es aceptado y se hace _merge_ o hay que hacer nuevos
+    cambios (vuelve al paso 3).
+
+:::
+::::
+
+## ✏️ Plantemos árboles
+
+![](images/tree_pao.png)

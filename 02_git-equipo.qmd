@@ -25,16 +25,123 @@ colaborativo entre personas para desarrollar software. En el taller anterior vim
 Modificar un archivo --> Add --> Commit --> Push
 ```
 
-Así que cada vez haces un push, git comparará los archivos en el repositorio 
+Así que cada vez hagas un push, git comparará los archivos en el repositorio 
 remoto con la versión que actualizaste localmente y actualizará el repo remoto para
-que todo esté sincronizado. Ademas vos tenes permiso totales sobre ambos repositorios, pero cuando colaboras en un proyecto, puedes encontrarte en una de estas dos situaciones
+que todo esté sincronizado. 
 
-- Tienes permiso de escritura en el repositorio en el que estás trabajando.
-- No tienes permiso de escritura en el repositorio.
+Pero cuando se trabaja con otras personas hay casos que potencialmente pueden crear conflictos de _merge_ o versiones. 
+Aunque el nombre sugiera lo contrario, un conflicto 
+de merge no es necesariamente un error, ocurre cuando la versión de un archivo en el 
+repositorio local no es compatible con su versión en el repositorio remoto. 
+A veces, Git es capaz de combinar los dos conjuntos de cambios sin ningún problema. 
+Pero a veces esto no es posible, y requiere que una persona intervenga y decida cómo 
+deben combinarse los múltiples cambios, ¿mantiene la versión A, la versión B o una combinación de ambas?
 
-## Branches (ramas) y Pull Request (solicitudes de cambios)
+## Identificando conflictos de versiones
 
-Antes de seguir con el flujo de trabajo colaborativo, es importante entender dos conceptos de git: ramas y pull requests.
+Imaginá que alguien en tu equipo trabaja sobre el archivo `01_lectura-limpieza-datos.R` en un proyecto/repositorio donde estan trabajando a la par:
+
+```r
+# Carga de librerias
+library(readr)
+library(dplyr)
+
+# Lectura de datos 
+temperatura_raw <- read.csv("datos/temperatura_La-Pampa.csv) |>
+  filter(temp_max > 45) # filtro valores incorrectos
+
+```
+
+Al mismo tiempo, vos también decidiste trabajar en la limpieza de los datos pero en vez de leer el archivo con `read.csv()`, usaste la función `read_csv()` que está en el paquete `readr`. Cuando intentás hacer push de la nueva versión del archivo al repositorio remoto te encontrás con este mensaje:
+
+```bash
+>>> /usr/bin/git push origin HEAD:refs/heads/master
+To github.com:paocorrales/taller-git.git
+ ! [rejected]        HEAD -> master (fetch first)
+error: failed to push some refs to 'github.com:paocorrales/taller-git.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+El mensaje nos aconseja hacer pull antes de intentar hacer push para actualizar
+el repositorio primero el repositorio local antes de enviar los cambios an GitHub. 
+Al hacer pull nos encontramos con el siguiente 
+problema:
+
+```bash
+>>> /usr/bin/git pull
+From github.com:paocorrales/taller-git
+   6e63458..d7d2a6c  master     -> origin/master
+Auto-merging 01_lectura-limpieza-datos.R
+CONFLICT (content): Merge conflict in 01_lectura-limpieza-datos.R
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+El mensaje dice que hay conflictos con el contenido de `01_lectura-limpieza-datos.R` 
+y que el merge automático falló. La buena noticia es que ya sabemos cuál es el 
+archivo que da problemas. Aquí, hacer commits con pequeños cambios ayuda mucho.
+
+Ahora, si revisamos el archivo `01_lectura-limpieza-datos.R`, el contenido cambió:
+
+```r
+# Carga de librerias
+library(readr)
+library(dplyr)
+
+# Lectura de datos 
+<<<<<<< HEAD
+      temperatura_raw <- read_csv("datos/temperatura_La-Pampa.csv) |>
+=======
+      temperatura_raw <- read.csv("datos/temperatura_La-Pampa.csv) |>
+>>>>>>> d7d2a6cf0e03652e1ff52e7cf5eb2da96fe69312
+  filter(temp_max > 45) # filtro valores incorrectos
+```
+
+Estos simbolos `<<<<<<<`, `=======` y `>>>>>>>` fueron agregados por git para resaltar 
+el contenido que está generando conflictos. Todo lo que hay entre `<<<<<<< HEAD` y 
+`=======` corresponde a la versión local, y el contenido entre `=======` y `>>>>>>>`
+es la versión actualmente en GitHub. La cadena larga es el identificador del commit en Github y `HEAD` 
+refiere al último commit en el repo local.
+
+Para arreglar el conflicto será necesario:
+
+1. Eliminar las lineas que agrego git.
+2. Elegir una de las 2 versiones en conflicto o generar una nueva versión que incluya todos los cambios.
+3. Guardar el archivo y hacer un nuevo commit, que normalmente tiene como mensaje "arregla conflicto de merge" o algo similar.
+
+Algunas herramientas como GitHub Desktop y GitKraken tienen una interfaz gráfica
+que permite resolver estos conflictos de manera rápida, sin embargo el mecanismo
+en el fondo es el mismo.
+
+Los conflictos de merge pueden suceder aún si no estás trabajando con otras personas. 
+Por ejemplo, si cambiaste algo en GitHub, olvidaste hacer `pull`
+localmente y luego cambiaste el mismo archivo en tu compu. Cuando intentes hacer `push` te vas a encontrar con problemas.
+Aunque los conflictos son parte de trabajar con
+control de versiones, vamos a tratar de evitarlos en la medida de lo posible.
+
+A continuación veremos algunas estrategías para trabajar incluyendo el uso de branches (ramas) y pull requests (solicitudes de cambios).
+
+### 1. Primero, hace `pull`
+
+Es recomendable hacer `pull` antes de empezar a trabajar con los archivos de un repositorio, ya que así empezarás a trabajar con la versión más actualizada del repositorio. 
+
+### 2. Cada persona trabaja en archivos diferentes
+
+Si trabajas en equipo, la forma más fácil de evitar conflictos de merge es pedir a cada persona que trabaje en archivos diferentes y que no editen los archivos asignados a otras personas. Esto funciona pero tiene limitaciones.
+
+A largo plazo, es posible que tengas que trabajar en el código de otra persona y, en esos casos, la comunicación entre los miembros del equipo es fundamental.
+
+### 3. Las personas se turnan
+
+Es posible que más de una persona esté trabajando en el mismo archivo, ya sea un script o documentación. Por lo general, ese será un trabajo que requiere tiempo y se puede dividir entre muchas personas. Una solución es turnarse: vos trabajás en el archivo por la mañana y tu compañero/a lo hace por la tarde. De nuevo, esto tiene limitaciones y no va en línea con el espíritu de trabajar con git.
+
+### 4. Las personas trabajan en branchs 
+
+Aquí es donde aprovechamos al máximo lo que git tiene para ofrecer.
+
 
 Las branchs (ramas en inglés) parecen un concepto nuevo, pero en realidad, siempre estás trabajando en una rama sin darte cuenta. La branch "predeterminada" en general se llama *main* (o *master* en configuraciones mas viejas) porque es la principal, y todo este tiempo estuviste "agregando commits a la branch main". 
 
@@ -53,14 +160,14 @@ Los pull request pueden surgir de *forks* (que presentaremos más adelante) o de
 Permiten a quienes mantienen y colaboran en un proyecto, revisar, discutir, solicitar y aprobar los cambios y sumarlos al repositorio cuando estan listos.
 
 
-### Escenario 1: Tienes permiso de escritura en el repositorio en el que estás trabajando.
+### Escenario 1: Usamos branchs
 
 La primera situación es la más común cuando se trabaja en equipo en un proyecto a largo plazo.
-Puedes clonar el repositorio siguiendo [estas mismas instrucciones](https://paocorrales.github.io/git-desarrollo-software/01_git-solo.html#github-repo-primero-proyecto-de-rstudio-despues) y utilizar el mismo flujo de trabajo que antes.
+Puedes *clonar* el repositorio siguiendo [estas mismas instrucciones](https://paocorrales.github.io/git-desarrollo-software/01_git-solo.html#github-repo-primero-proyecto-de-rstudio-despues) y utilizar el mismo flujo de trabajo que antes.
 Cuando intentes enviar tus cambios al repositorio remoto, GitHub comprobará si tienes permisos para modificar el repositorio.
-La única diferencia entre esto y trabajar por tu cuenta es que necesitas comunicarte bien para que dos personas no trabajen en lo mismo.
-Pero esto es así con o sin git.
+Hasta acá estamos en la situación anterior, donde la comunicación es clave para no pisar el trabajo de otras personas (y para trabajar en general!) y evitar conflictos de merge. 
 
+Sin embargo es posible incorporar branches para trabajar de manera paralela.
 Este diagrama muestra el flujo de trabajo cuando se desea contribuir al repositorio utilizando branchs y además, **asumimos que tenés permisos de escritura en el repositorio remoto**:
 
 ![](images/no_fork.png)
@@ -77,7 +184,7 @@ Este diagrama muestra el flujo de trabajo cuando se desea contribuir al reposito
 
 Puedes leer más sobre las ramas en el [capítulo 22 de Happy git with R](https://happygitwithr.com/git-branches). Y vamos a ver mas sobre esto en los proximos talleres. 
 
-## Escenario 2 - No tienes permiso de escritura en el repositorio.
+## Escenario 2: Usamos forks y branchs.
 
 **Si no tenés permisos de escritura en el repositorio remoto,** tendrás que utilizar **forks**. Esto es muy habitual cuando querés colaborar en un proyecto del que no formas parte.
 
@@ -130,7 +237,7 @@ que vimos recién en distintas situaciones.
     resposanble de mantenerlo y desarrollarlo recibirás issues y PR que
     tendrás que revisar y responder. En este caso es muy importante
     utilizar branches para reducir la posibilidad de que hagas un cambio
-    en main que puedan afectar a usuarios de tu paquete.
+    en _main_ que puedan afectar a usuarios de tu paquete.
     
 3.  **Colaborando en un proyecto del que no sos parte** Si contribuís
     ocasionalmente con un paquete de R, tendrás que usar el flujo de

@@ -47,7 +47,7 @@ library(readr)
 library(dplyr)
 
 # Lectura de datos 
-temperatura_raw <- read.csv("datos/temperatura_La-Pampa.csv) |>
+temperatura_raw <- read.csv("datos/temperatura_La-Pampa.csv") |>
   filter(temp_max > 45) # filtro valores incorrectos
 
 ```
@@ -93,9 +93,9 @@ library(dplyr)
 
 # Lectura de datos 
 <<<<<<< HEAD
-      temperatura_raw <- read_csv("datos/temperatura_La-Pampa.csv) |>
+      temperatura_raw <- read_csv("datos/temperatura_La-Pampa.csv") |>
 =======
-      temperatura_raw <- read.csv("datos/temperatura_La-Pampa.csv) |>
+      temperatura_raw <- read.csv("datos/temperatura_La-Pampa.csv") |>
 >>>>>>> d7d2a6cf0e03652e1ff52e7cf5eb2da96fe69312
   filter(temp_max > 45) # filtro valores incorrectos
 ```
@@ -184,7 +184,7 @@ Este diagrama muestra el flujo de trabajo cuando se desea contribuir al reposito
 
 Puedes leer más sobre las ramas en el [capítulo 22 de Happy git with R](https://happygitwithr.com/git-branches). Y vamos a ver mas sobre esto en los proximos talleres. 
 
-## Escenario 2: Usamos forks y branchs.
+### Escenario 2: Usamos forks y branchs.
 
 **Si no tenés permisos de escritura en el repositorio remoto,** tendrás que utilizar **forks**. Esto es muy habitual cuando querés colaborar en un proyecto del que no formas parte.
 
@@ -256,13 +256,13 @@ que vimos recién en distintas situaciones.
     equipo puedan revisar tu propuesta.
 
 
-### Plantemos árboles!
+## Plantemos árboles!
 
 Como ejemplo y ejercicio colaboraremos con la recientemente abierta
 galeria de arte Flametree, y haremos PRs en el camino.
 
 ::: ejercicio
-Fork del repositorio
+**Fork del repositorio**
 
 1.  Ingresá a
     [github.com/paocorrales/flametree_gallery](https://github.com/paocorrales/flametree_gallery)
@@ -295,8 +295,16 @@ Utiliza el paquete de R
 profundidad cómo funciona este paquete, pero es una buena excusa para
 practicar pull requests.
 
+**Crea tu branch de trabajo**
+
+1. En la pestaña de git en RStudio, hace click en el botón "New Branch"
+2. Escribí el nombre de la nueva branch y creala. El nombre puede ser cualquier cosa pero sin espacios! 
+3. Automáticamente RStudio va a cambiar a la nueva branch para que puedas trabajar. 
+
+Siempre podés navegar entre branches usando el menu desplegable a la derecha de "New Branch". 
+
 ::: ejercicio
-Hacé un cambio en el repositorio
+**Hacé un cambio en el repositorio local**
 
 1.  Hacé una copia del archivo `template_script.R` y cámbiale el nombre
     a `<tu-nombre.R>`
@@ -325,7 +333,7 @@ código para crear tu árbol) en el repositorio original, es hora de hacer
 un pull request.
 
 ::: ejercicio
-Hacé un pull request
+**Hacé un pull request**
 
 1.  Entrá a tu repositorio en GitHub, ahí encontrarás tu último commit y
     un mensaje como este:
